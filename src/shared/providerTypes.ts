@@ -9,6 +9,14 @@ export type providerType = {
     email: string
 }
 
+export type postProviderType = {
+    name: string
+    phone: number | string
+    address: string
+    active: boolean
+    email: string
+}
+
 export interface IProviderState {
     providers: providerType[]
     status: fetchStatus

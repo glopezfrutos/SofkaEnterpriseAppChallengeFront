@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IProviderState, providerType } from "../shared/providerTypes"
+import { IProviderState, providerType, postProviderType } from "../shared/providerTypes"
 import { fetchStatus } from "../shared/fetchStatus";
 import { RootState } from './store'
 
@@ -19,6 +19,17 @@ export const getAllProviders = createAsyncThunk('providers/fetchAll', async () =
     return (await response.json()) as providerType[]
 })
 
+export const postProvider = createAsyncThunk('provider/create', async (provider: postProviderType) => {
+    const response = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(provider),
+    })
+    return (await response.json()) as providerType
+})
+
 
 export const providerSlice = createSlice({
     name: "providers",
@@ -27,19 +38,32 @@ export const providerSlice = createSlice({
         addProvider: (state, action) => { }
     },
     extraReducers: (builder) => {
-      // get
-      builder.addCase(getAllProviders.pending, (state, action) => {
-        state.status = fetchStatus.PENDING
-      })
-      builder.addCase(getAllProviders.fulfilled, (state, action) => {
-        state.status = fetchStatus.COMPLETED
-        state.providers = action.payload
-      })
-      builder.addCase(getAllProviders.rejected, (state, action) => {
-        state.status = fetchStatus.FAILED
-        state.error = 'Something went wrong while fetching'
-        state.providers = [...state.providers]
-      })}
+        // get
+        builder.addCase(getAllProviders.pending, (state, action) => {
+            state.status = fetchStatus.PENDING
+        })
+        builder.addCase(getAllProviders.fulfilled, (state, action) => {
+            state.status = fetchStatus.COMPLETED
+            state.providers = action.payload
+        })
+        builder.addCase(getAllProviders.rejected, (state, action) => {
+            state.status = fetchStatus.FAILED
+            state.error = 'Something went wrong while fetching'
+            state.providers = [...state.providers]
+        })
+        // post
+        builder.addCase(postProvider.pending, (state) => {
+            state.status = fetchStatus.PENDING
+        })
+        builder.addCase(postProvider.fulfilled, (state, action) => {
+            state.status = fetchStatus.COMPLETED
+            state.providers.push(action.payload)
+        })
+        builder.addCase(postProvider.rejected, (state) => {
+            state.status = fetchStatus.FAILED
+            state.error = 'Something went wrong while creating the post'
+        })
+    }
 });
 
 // actions
