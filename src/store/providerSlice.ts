@@ -1,27 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IProviderState, providerType, fetchStatus } from "../shared/providerTypes"
+import { IProviderState, providerType } from "../shared/providerTypes"
+import { fetchStatus } from "../shared/fetchStatus";
 import { RootState } from './store'
 
 
 const initialState: IProviderState = {
-    providers: [
-        {
-            id: "1",
-            name: "Aname",
-            phone: "Aphone",
-            address: "Aaddress",
-            active: true,
-            email: "Aemail"
-        },
-        {
-            id: "2",
-            name: "Bname",
-            phone: "Bphone",
-            address: "Baddress",
-            active: true,
-            email: "Bemail"
-        }
-    ],
+    providers: [],
     status: fetchStatus.IDLE,
     error: null
 }

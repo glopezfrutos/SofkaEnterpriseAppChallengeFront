@@ -1,3 +1,5 @@
+import { fetchStatus } from "./fetchStatus"
+
 export type providerType = {
     id: number | string
     name: string
@@ -5,13 +7,6 @@ export type providerType = {
     address: string
     active: boolean
     email: string
-}
-
-export enum fetchStatus {
-    IDLE = 'idle',
-    COMPLETED = 'completed',
-    FAILED = 'failed',
-    PENDING = 'pending',
 }
 
 export interface IProviderState {

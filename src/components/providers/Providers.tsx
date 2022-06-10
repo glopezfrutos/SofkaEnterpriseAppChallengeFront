@@ -1,8 +1,11 @@
 import React from 'react'
-import { providerType, fetchStatus } from "../../shared/providerTypes"
+import { providerType } from "../../shared/providerTypes"
+import { fetchStatus } from '../../shared/fetchStatus' 
 import { getAllProviders, selectProviderFetchError, selectProviderState, selectProviderStatus  } from '../../store/providerSlice'
 import { useSelector } from "react-redux"
 import { useAppDispatch } from "../../store/store"
+import ProviderRow from './ProviderRow'
+import AddProvider from './AddProvider'
 
 const Providers = () => {
 
@@ -33,18 +36,10 @@ const Providers = () => {
           </tr>
         </thead>
         <tbody>
-          {providerState.map((p:providerType) => {
-            return (
-            <tr key={p.id}>
-              <th scope="row">{p.name}</th>
-              <td>{p.phone}</td>
-              <td>{p.address}</td>
-              <td>{p.email}</td>
-            </tr>
-          )}
-          )}
+          {!error && providerState.map((p:providerType) => <ProviderRow key={p.id} p={p} />)}
         </tbody>
       </table>
+      <AddProvider />
     </div>
   )
 }
