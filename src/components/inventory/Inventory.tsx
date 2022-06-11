@@ -11,7 +11,6 @@ import {
 import {fetchStatus} from "../../shared/fetchStatus";
 import ProductRow from "./ProductRow";
 import AddProduct from './AddProduct';
-import { productToPostType } from '../../shared/purchaseOrderTypes';
 
 const Inventory = () => {
 

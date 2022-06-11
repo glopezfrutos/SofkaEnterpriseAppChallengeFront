@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { productToPostType } from "../shared/purchaseOrderTypes";
+import { productToSelectType } from "../shared/purchaseOrderTypes";
 import { RootState } from "./store";
 
 
-const initialState: productToPostType[] = []
+const initialState: productToSelectType[] = []
 
 export const selectedProductsSlice = createSlice({
     name: 'selectedProducts',
@@ -14,24 +14,12 @@ export const selectedProductsSlice = createSlice({
         },
         removeSelectedProduct(state, action) {
             state.splice(action.payload, 1)
-        },
-        updateSelectedProduct(state, action) {
-            state.forEach((p) => {
-                if (p.name == action.payload.name) {
-                    state.splice(0, 1, {
-                        name: p.name,
-                        quantity: action.payload.quantity,
-                        stockQuantity: p.stockQuantity,
-                        price: p.price
-                    })
-                }
-            })
         }
     }
 })
 
 // actions
-export const { addSelectedProduct, removeSelectedProduct, updateSelectedProduct } = selectedProductsSlice.actions;
+export const { addSelectedProduct, removeSelectedProduct } = selectedProductsSlice.actions;
 
 // state selectors
 export const selectSelectedProductsState = () => (state: RootState) => state.selectedProducts

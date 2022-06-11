@@ -1,12 +1,11 @@
 import LoginBtn from './LoginBtn'
 import { useSelector } from "react-redux"
-import { stateType } from "../../../store/store"
 import { Link } from 'react-router-dom'
+import { stateType } from '../../../store/store'
 
 
 const Navbar = () => {
-
-    const logged = useSelector((state: stateType) => state.logged)
+    const logged = useSelector((state:stateType) => state.logged)
 
     return (
         <nav className="navbar navbar-expand-lg bg-light navbar-light">

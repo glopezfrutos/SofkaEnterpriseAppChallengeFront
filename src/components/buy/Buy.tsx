@@ -1,17 +1,14 @@
 import React from 'react'
-import { postProductType, productType } from '../../shared/productTypes'
-import { getAllProducts, postProduct, selectProductState } from '../../store/productSlice'
-import { addSelectedProduct, removeSelectedProduct, selectSelectedProductsState, updateSelectedProduct } from '../../store/selectedProductsSlice'
+import { getAllProducts, selectProductState } from '../../store/productSlice'
+import { addSelectedProduct, selectSelectedProductsState } from '../../store/selectedProductsSlice'
 import { useAppDispatch } from '../../store/store'
 import ProviderOptions from './ProviderOptions'
 import { getAllProviders, selectProviderFetchError, selectProviderState, selectProviderStatus } from '../../store/providerSlice'
 import { useSelector } from "react-redux"
 import { fetchStatus } from '../../shared/fetchStatus'
 import { providerType } from '../../shared/providerTypes'
-import ProductOption from './ProductOption'
 import { postPurchaseOrderType, productInDocumentType } from '../../shared/purchaseOrderTypes'
-import { postPurchaseOrder, selectPurchaseOrderState, addPurchaseOrder } from '../../store/buySlice'
-import ProductSelectedRow from './ProductToBuyRow'
+import { postPurchaseOrder, selectPurchaseOrderState } from '../../store/buySlice'
 import ProductToBuyRow from './ProductToBuyRow'
 
 
@@ -101,7 +98,7 @@ const Buy = () => {
               </tr>
             </thead>
             <tbody>
-              {!error && inventoryState.map(prod => <ProductToBuyRow key={prod.name} p={{ ...prod, quantity: 0 }} />)}
+              {!error && inventoryState.map(prod => <ProductToBuyRow key={prod.name} p={prod} />)}
             </tbody>
           </table>
         </div>

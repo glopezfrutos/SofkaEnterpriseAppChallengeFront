@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from './store';
 
 const initialState:boolean = false
 
@@ -12,5 +13,5 @@ const loginSlice = createSlice({
   }
 })
 
-export const {toggleLogged} = loginSlice.actions
+export const { toggleLogged } = loginSlice.actions
 export default loginSlice.reducer
