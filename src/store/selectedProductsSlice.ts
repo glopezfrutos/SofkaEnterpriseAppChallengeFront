@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { productInDocumentType } from "../shared/purchaseOrderTypes";
+import { productToPostType } from "../shared/purchaseOrderTypes";
 import { RootState } from "./store";
 
 
-const initialState: productInDocumentType[] = []
+const initialState: productToPostType[] = []
 
 export const selectedProductsSlice = createSlice({
     name: 'selectedProducts',
@@ -16,11 +16,15 @@ export const selectedProductsSlice = createSlice({
             state.splice(action.payload, 1)
         },
         updateSelectedProduct(state, action) {
-            
-            state.forEach((product) => {
-
-                    product.quantity = (action.payload.quantity)
-                
+            state.forEach((p) => {
+                if (p.name == action.payload.name) {
+                    state.splice(0, 1, {
+                        name: p.name,
+                        quantity: action.payload.quantity,
+                        stockQuantity: p.stockQuantity,
+                        price: p.price
+                    })
+                }
             })
         }
     }

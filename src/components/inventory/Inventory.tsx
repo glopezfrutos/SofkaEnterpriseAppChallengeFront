@@ -11,6 +11,7 @@ import {
 import {fetchStatus} from "../../shared/fetchStatus";
 import ProductRow from "./ProductRow";
 import AddProduct from './AddProduct';
+import { productToPostType } from '../../shared/purchaseOrderTypes';
 
 const Inventory = () => {
 
@@ -41,7 +42,7 @@ const Inventory = () => {
           </tr>
           </thead>
           <tbody>
-          {!error && inventoryState.map((p:productType) => p.active?<ProductRow key={p.id} p={p} /> :"")}
+          {!error && inventoryState.map(product => <ProductRow key={product.id} p={product} /> )}
           </tbody>
         </table>
         <AddProduct />

@@ -6,6 +6,13 @@ export type productInDocumentType = {
     price: number
 }
 
+export type productToSelectType = {
+    selected: boolean
+    name: string
+    quantity: number
+    price: number
+}
+
 export type purchaseOrderType = {
     id: string
     orderNumer: number | null
