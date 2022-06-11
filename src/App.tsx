@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import Navbar from './components/general/navbar/Navbar'
 import { useSelector } from "react-redux"
-import { stateType } from "./store/store"
+import { RootState } from "./store/store"
 import Inventory from "./components/inventory/Inventory"
 import Providers from "./components/providers/Providers"
 import Buy from "./components/buy/Buy"
@@ -12,7 +12,7 @@ import Home from "./components/general/Home"
 
 function App() {
 
-  const logged = useSelector((state: stateType) => state.logged)
+  const logged = useSelector((state: RootState) => state.logged)
 
   return (
     <BrowserRouter>
@@ -30,7 +30,7 @@ function App() {
           <Route path="/" element={<Login />} />
         </Routes>}
 
-      <footer className="navbar bg-light p-3">This is my footer</footer>
+      <footer className="navbar bg-light p-3">Don Raul's Hardware Store</footer>
     </BrowserRouter>
   )
 }
