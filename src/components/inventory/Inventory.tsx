@@ -1,13 +1,13 @@
 import React from 'react'
 import {productType} from "../../shared/productTypes";
-import {useAppDispatch} from "../../store/store";
+import {useAppDispatch} from "../../state/store";
 import {useSelector} from "react-redux";
 import {
   getAllProducts,
   selectProductFetchError,
   selectProductState,
   selectProductStatus
-} from "../../store/productSlice";
+} from "../../state/productSlice";
 import {fetchStatus} from "../../shared/fetchStatus";
 import ProductRow from "./ProductRow";
 import AddProduct from './AddProduct';

@@ -1,24 +1,26 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
-import Navbar from './components/general/navbar/Navbar'
+import Navbar from './components/navbar/Navbar'
 import { useSelector } from "react-redux"
-import { RootState } from "./store/store"
+import { RootState } from "./state/store"
 import Inventory from "./components/inventory/Inventory"
 import Providers from "./components/providers/Providers"
 import Buy from "./components/buy/Buy"
 import Sell from "./components/sell/Sell"
-import Login from "./components/general/Login"
-import Home from "./components/general/Home"
+import Login from "./components/login/Login"
+import Home from "./components/login/Home"
+import SignIn from './components/login/SignIn'
 
 
 function App() {
 
-  const logged = useSelector((state: RootState) => state.logged)
+  const { user } = useSelector((state: RootState) => state.logged)
 
   return (
     <BrowserRouter>
       <Navbar />
-      {logged ?
+      {user !== null ?
         <Routes>
+          <Route path="*" element={<Navigate replace to="/" />} />
           <Route path="/" element={<Home />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/providers" element={<Providers />} />
@@ -28,6 +30,8 @@ function App() {
         <Routes>
           <Route path="*" element={<Navigate replace to="/" />} />
           <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signin" element={<SignIn />} />
         </Routes>}
 
       <footer className="navbar bg-light p-3">Don Raul's Hardware Store</footer>

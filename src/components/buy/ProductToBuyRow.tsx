@@ -1,7 +1,7 @@
 import React from 'react'
 import { productType } from '../../shared/productTypes'
 import { productToSelectType } from '../../shared/purchaseOrderTypes'
-import { useAppDispatch } from '../../store/store'
+import { useAppDispatch } from '../../state/store'
 
 interface IProps {
   p: productType

@@ -1,7 +1,7 @@
 import React from "react"
 import { postProductType } from "../../shared/productTypes"
-import { postProduct } from "../../store/productSlice"
-import { useAppDispatch } from "../../store/store"
+import { postProduct } from "../../state/productSlice"
+import { useAppDispatch } from "../../state/store"
 
 const AddProduct = () => {
     const [name, setName] = React.useState('')

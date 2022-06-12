@@ -1,9 +1,9 @@
 import React from 'react'
 import { providerType } from "../../shared/providerTypes"
 import { fetchStatus } from '../../shared/fetchStatus' 
-import { getAllProviders, selectProviderFetchError, selectProviderState, selectProviderStatus  } from '../../store/providerSlice'
+import { getAllProviders, selectProviderFetchError, selectProviderState, selectProviderStatus  } from '../../state/providerSlice'
 import { useSelector } from "react-redux"
-import { useAppDispatch } from "../../store/store"
+import { useAppDispatch } from "../../state/store"
 import ProviderRow from './ProviderRow'
 import AddProvider from './AddProvider'
 

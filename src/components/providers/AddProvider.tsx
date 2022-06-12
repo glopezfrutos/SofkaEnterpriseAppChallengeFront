@@ -1,7 +1,7 @@
 import React from "react"
 import { postProviderType } from "../../shared/providerTypes"
-import { postProvider } from "../../store/providerSlice"
-import { useAppDispatch } from "../../store/store"
+import { postProvider } from "../../state/providerSlice"
+import { useAppDispatch } from "../../state/store"
 
 const AddProvider = () => {
     const [name, setName] = React.useState('')

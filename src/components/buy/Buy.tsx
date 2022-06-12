@@ -1,14 +1,14 @@
 import React from 'react'
-import { getAllProducts, selectProductState } from '../../store/productSlice'
-import { addSelectedProduct, selectSelectedProductsState } from '../../store/selectedProductsSlice'
-import { useAppDispatch } from '../../store/store'
+import { getAllProducts, selectProductState } from '../../state/productSlice'
+import { addSelectedProduct, selectSelectedProductsState } from '../../state/selectedProductsSlice'
+import { useAppDispatch } from '../../state/store'
 import ProviderOptions from './ProviderOptions'
-import { getAllProviders, selectProviderFetchError, selectProviderState, selectProviderStatus } from '../../store/providerSlice'
+import { getAllProviders, selectProviderFetchError, selectProviderState, selectProviderStatus } from '../../state/providerSlice'
 import { useSelector } from "react-redux"
 import { fetchStatus } from '../../shared/fetchStatus'
 import { providerType } from '../../shared/providerTypes'
 import { postPurchaseOrderType, productInDocumentType } from '../../shared/purchaseOrderTypes'
-import { postPurchaseOrder, selectPurchaseOrderState } from '../../store/buySlice'
+import { postPurchaseOrder, selectPurchaseOrderState } from '../../state/buySlice'
 import ProductToBuyRow from './ProductToBuyRow'
 
 
