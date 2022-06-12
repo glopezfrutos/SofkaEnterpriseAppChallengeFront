@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import loginSlice from './loginSlice'
 import { providerSlice } from "./providerSlice";
 import { productSlice } from "./productSlice";
-import { purchaseOrderSlice } from "./buySlice";
+import { purchaseOrderSlice } from "./purchaseOrderSlice";
 import {selectedProductsSlice} from "./selectedProductsSlice";
 
 const store = configureStore({

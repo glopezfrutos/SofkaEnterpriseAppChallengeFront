@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 import { RootState } from "./state/store"
 import Inventory from "./components/inventory/Inventory"
 import Providers from "./components/providers/Providers"
-import Buy from "./components/buy/Buy"
+import PurchaseOrder from "./components/purchaseOrder/PurchaseOrder"
 import Sell from "./components/sell/Sell"
 import Login from "./components/login/Login"
 import Home from "./components/login/Home"
@@ -24,7 +24,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/providers" element={<Providers />} />
-          <Route path="/buy" element={<Buy />} />
+          <Route path="/buy" element={<PurchaseOrder />} />
           <Route path="/sell" element={<Sell />} />
         </Routes> :
         <Routes>

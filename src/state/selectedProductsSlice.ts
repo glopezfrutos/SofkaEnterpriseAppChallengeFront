@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { productToSelectType } from "../shared/purchaseOrderTypes";
+import { productInDocumentType, productToSelectType } from "../shared/purchaseOrderTypes";
 import { RootState } from "./store";
 
 
-const initialState: productToSelectType[] = []
+const initialState: productInDocumentType[] = []
 
 export const selectedProductsSlice = createSlice({
     name: 'selectedProducts',

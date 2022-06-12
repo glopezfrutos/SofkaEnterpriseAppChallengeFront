@@ -29,7 +29,7 @@ const Navbar = () => {
                             <Link className={user !== null ? "nav-link" : "nav-link disabled"} to="/providers">Providers</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className={user !== null ? "nav-link" : "nav-link disabled"} to="/buy">Buy</Link>
+                            <Link className={user !== null ? "nav-link" : "nav-link disabled"} to="/buy">Purchase order</Link>
                         </li>
                         <li className="nav-item">
                             <Link className={user !== null ? "nav-link" : "nav-link disabled"} to="/sell">Sell</Link>

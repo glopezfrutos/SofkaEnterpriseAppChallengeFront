@@ -1,6 +1,6 @@
 import React from 'react'
-import { getAllProducts, selectProductState } from '../../state/productSlice'
-import { addSelectedProduct, selectSelectedProductsState } from '../../state/selectedProductsSlice'
+import { getAllProducts, selectProductFetchError, selectProductState, selectProductStatus } from '../../state/productSlice'
+import { selectSelectedProductsState } from '../../state/selectedProductsSlice'
 import { useAppDispatch } from '../../state/store'
 import ProviderOptions from './ProviderOptions'
 import { getAllProviders, selectProviderFetchError, selectProviderState, selectProviderStatus } from '../../state/providerSlice'
@@ -8,79 +8,69 @@ import { useSelector } from "react-redux"
 import { fetchStatus } from '../../shared/fetchStatus'
 import { providerType } from '../../shared/providerTypes'
 import { postPurchaseOrderType, productInDocumentType } from '../../shared/purchaseOrderTypes'
-import { postPurchaseOrder, selectPurchaseOrderState } from '../../state/buySlice'
+import { postPurchaseOrder } from '../../state/purchaseOrderSlice'
 import ProductToBuyRow from './ProductToBuyRow'
 
 
-const Buy = () => {
+const PurchaseOrder = () => {
+  // Variables to post a new Purchase order
   const [providerName, setProviderName] = React.useState('')
   const [providerId, setProviderId] = React.useState('')
-  const [products, setProducts] = React.useState<productInDocumentType[]>()
+  const [products, setProducts] = React.useState<productInDocumentType[]>([])
   const dispatch = useAppDispatch()
 
-
-
-  const error = useSelector(selectProviderFetchError())
-  const status = useSelector(selectProviderStatus())
-  const providerState = useSelector(selectProviderState())
-  const inventoryState = useSelector(selectProductState())
-  const purchaseOrderState = useSelector(selectPurchaseOrderState())
-  const selectedProductsState = useSelector(selectSelectedProductsState())
-
+  // Get providers list
+  const errorProvider = useSelector(selectProviderFetchError())
+  const statusProvider = useSelector(selectProviderStatus())
+  const stateProvider = useSelector(selectProviderState())
   React.useEffect(() => {
-    if (status === fetchStatus.IDLE) {
+    if (statusProvider === fetchStatus.IDLE) {
       dispatch(getAllProviders())
     }
   }, [dispatch])
 
+  // Get product list
+  const errorProduct = useSelector(selectProductFetchError())
+  const statusProduct = useSelector(selectProductStatus())
+  const productState = useSelector(selectProductState())
   React.useEffect(() => {
-    if (status === fetchStatus.IDLE) {
+    if (statusProduct === fetchStatus.IDLE) {
       dispatch(getAllProducts())
     }
   }, [dispatch])
 
-
-  // To handle options from select list of Products.
-  let selectedProduct
-  let selectedProductHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    let product = inventoryState.filter(p => (p.id == event.target.value))[0]
-    let toShow = { name: product.name, stockQuantity: product.stockQuantity, price: product.price }
-    dispatch(addSelectedProduct(toShow))
-  }
-
   // To handle options from select list of Providers.
   let selectedProvider
   let selectedProviderHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    let providerSelected = providerState.filter(p => (p.id == event.target.value))[0]
+    let providerSelected = stateProvider.filter(p => (p.id == event.target.value))[0]
     setProviderName(providerSelected.name)
     setProviderId("" + providerSelected.id)
   }
 
+  // State of selected products
+  const selectedProductsState = useSelector(selectSelectedProductsState())
+
+  // To post a new Purchase order
   const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault
     setProducts(selectedProductsState)
-    console.log(selectedProductsState)
-    if (providerName && providerId && products) {
-
-      // dispatch
-      const newOrder: postPurchaseOrderType = { providerName, providerId, products }
-      console.log(newOrder)
-      dispatch(postPurchaseOrder(newOrder))
-      setProviderName('')
-      setProviderId('')
-      setProducts(undefined)
-    }
+    // dispatch
+    const newOrder: postPurchaseOrderType = { providerName, providerId, products }
+    dispatch(postPurchaseOrder(newOrder))
+    setProviderName('')
+    setProviderId('')
+    setProducts([])
   }
 
   return (
     <div className='m-3'>
-      <h3>Buy stock</h3>
-      <h4>Generate new purchase order</h4>
+      <h3>Purchse Order</h3>
+      <h5>Generate new purchase order</h5>
       <form>
         <div className="mb-3">
           <label className="form-label">Provider</label>
           <select className="form-select" aria-label="Default select example" value={selectedProvider} onChange={(event) => selectedProviderHandler(event)}>
-            {!error && providerState.map((p: providerType) => <ProviderOptions key={p.id} provider={p} />)}
+            {!errorProvider && stateProvider.map((p: providerType) => <ProviderOptions key={p.id} provider={p} />)}
           </select>
         </div>
 
@@ -98,14 +88,17 @@ const Buy = () => {
               </tr>
             </thead>
             <tbody>
-              {!error && inventoryState.map(prod => <ProductToBuyRow key={prod.name} p={prod} />)}
+              {!errorProduct && productState.map(prod => <ProductToBuyRow key={prod.name} p={prod} />)}
             </tbody>
           </table>
         </div>
-        <button type="button" className="btn btn-primary" onClick={(e) => handleSubmit(e)}>Generate</button>
+        {providerName && providerId && products ?
+          <button type="button" className="btn btn-primary" onClick={(e) => handleSubmit(e)}>Generate Purchase Order</button> :
+          <button type="button" className="btn btn-primary disabled" onClick={(e) => handleSubmit(e)}>Generate Purchase Order</button>
+        }
       </form >
     </div >
   )
 }
 
-export default Buy
+export default PurchaseOrder
