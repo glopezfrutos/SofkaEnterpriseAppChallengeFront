@@ -4,13 +4,13 @@ import { auth } from '../../firebaseConfig'
 
 
 const SignIn = () => {
-  
+
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
 
-  const signInForm = (e : React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
+  const signInForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    if(password && userName) {
+    if (password && userName) {
       createUserWithEmailAndPassword(auth, userName, password)
         .then((userCredential) => {
           // Signed in
@@ -18,11 +18,11 @@ const SignIn = () => {
           //get a lot of information about the user that have logged in
           const user = userCredential.user;
           console.log("****user****");
-          
+
           console.log(user);
           /*Whit the information of the user you can populate an state that is mainly focused on 
           holding the information of the user that is logged in*/
-          
+
           // ...
         })
         .catch((error) => {
@@ -36,31 +36,42 @@ const SignIn = () => {
           // ..
         });
 
-        setUserName('')
-        setPassword('')
+      setUserName('')
+      setPassword('')
     }
   }
 
   return (
-    <div>
-      <h1>Sign In</h1>
-      <form>
-        <label htmlFor="username">Username</label><br />
-        <input 
-          onChange={(e) => setUserName(e.target.value)}  
-          type="text" 
-          name="username"
-          value={userName}
-          /><br />
-        <label htmlFor="password">Password</label><br />
-        <input 
-          onChange={(e) => setPassword(e.target.value)}  
-          type="password" 
-          name="password"
-          value={password}
-          /><br />
-        <button onClick={(e) => signInForm(e)}>Sign in</button><br />
-      </form>
+    <div className='card m-3'>
+      <div className="card-body">
+        <h3 className="card-title">Sign In</h3>
+        <div className="card-text">
+          <form>
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">Email</label><br />
+              <input
+                onChange={(e) => setUserName(e.target.value)}
+                type="email"
+                className="form-control"
+                name="username"
+                value={userName}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">Password</label><br />
+              <input
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                className="form-control"
+                name="password"
+                value={password}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary col" onClick={(e) => signInForm(e)}>Sign in</button><br />
+          </form>
+        </div>
+      </div>
     </div>
   )
 }

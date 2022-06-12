@@ -54,8 +54,8 @@ const GoogleLogIn: React.FunctionComponent = () => {
 
 
   return (
-    <div>
-      <button onClick={signInWithGoogleButton}>Log in with google</button>
+    <div className='m-3'>
+      <button className="btn btn-primary" onClick={signInWithGoogleButton}>Log in with Google</button>
     </div>
   );
 };

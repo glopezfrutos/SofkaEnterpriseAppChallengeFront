@@ -51,24 +51,32 @@ const MailLogin = () => {
   }
 
   return (
-    <div>
-      <h1>Log In</h1>
+    <div className='m-3'>
       <form>
-        <label htmlFor="username">Username</label><br />
-        <input
-          onChange={(e) => setUserName(e.target.value)}
-          type="text"
-          name="username"
-          value={userName}
-        /><br />
-        <label htmlFor="password">Password</label><br />
-        <input
-          onChange={(e) => setPassword(e.target.value)}
-          type="password"
-          name="password"
-          value={password}
-        /><br />
-        <button onClick={(e) => logInForm(e)}>Log In</button><br />
+        <div className="mb-3">
+          <label htmlFor="username" className="form-label">Email</label><br />
+          <input
+            onChange={(e) => setUserName(e.target.value)}
+            type="email"
+            className="form-control"
+            name="username"
+            value={userName}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">Password</label><br />
+          <input
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            className="form-control"
+            name="password"
+            value={password}
+          />
+        </div>
+        <div className='row'>
+        <button type="submit" className="btn btn-primary col" onClick={(e) => logInForm(e)}>Log In</button><br />
+        <button type="button" className="btn btn-secondary col" onClick={() => navigate('/signin')}>Or sign</button><br />
+        </div>
       </form>
     </div>
   );
