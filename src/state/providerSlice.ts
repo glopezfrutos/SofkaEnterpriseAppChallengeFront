@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IProviderState, providerType, postProviderType } from "../shared/providerTypes"
 import { fetchStatus } from "../shared/fetchStatus";
 import { RootState } from './store'
+import { URL } from "../shared/global"
 
 
 const initialState: IProviderState = {
@@ -10,7 +11,7 @@ const initialState: IProviderState = {
     error: null
 }
 
-const ENDPOINT = 'http://localhost:8080/api/v1/provider'
+const ENDPOINT = URL + "api/v1/provider"
 
 export const getAllProviders = createAsyncThunk('providers/fetchAll', async () => {
     const response = await fetch(ENDPOINT, {

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { productType, postProductType, IProviderState } from "../shared/productTypes"
 import { fetchStatus } from "../shared/fetchStatus";
 import { RootState } from './store'
-
+import { URL } from "../shared/global"
 
 const initialState: IProviderState = {
     products: [],
@@ -10,7 +10,7 @@ const initialState: IProviderState = {
     error: null
 }
 
-const ENDPOINT = 'http://localhost:8080/api/v1/product'
+const ENDPOINT = URL + "api/v1/product"
 
 export const getAllProducts = createAsyncThunk('product/fetchAll', async () => {
     const response = await fetch(ENDPOINT, {

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetchStatus } from "../shared/fetchStatus";
 import { RootState } from './store'
 import { IPurchaseOrderState, postPurchaseOrderType, purchaseOrderType } from "../shared/purchaseOrderTypes";
+import { URL } from "../shared/global"
 
 
 const initialState: IPurchaseOrderState = {
@@ -10,7 +11,7 @@ const initialState: IPurchaseOrderState = {
     error: null
 }
 
-const ENDPOINT = 'http://localhost:8080/api/v1/order'
+const ENDPOINT = URL + "api/v1/order"
 
 export const getAllPurchaseOrders = createAsyncThunk('order/fetchAll', async () => {
     const response = await fetch(ENDPOINT, {
