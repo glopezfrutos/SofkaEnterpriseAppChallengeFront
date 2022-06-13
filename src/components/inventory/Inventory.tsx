@@ -49,6 +49,9 @@ const Inventory = () => {
           <span className="visually-hidden">Loading...</span>
         </div> :
         ""}
+        {status === fetchStatus.FAILED ?
+          <p>Sorry, there was an error loading data.</p> :
+          ""}
       <AddProduct />
     </div>
   )

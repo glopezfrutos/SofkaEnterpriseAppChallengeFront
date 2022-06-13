@@ -72,6 +72,14 @@ const PurchaseOrder = () => {
           <select className="form-select" aria-label="Default select example" value={selectedProvider} onChange={(event) => selectedProviderHandler(event)}>
             {!errorProvider && stateProvider.map((p: providerType) => <ProviderOptions key={p.id} provider={p} />)}
           </select>
+          {statusProvider === fetchStatus.PENDING ?
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div> :
+        ""}
+        {statusProvider === fetchStatus.FAILED ?
+          <p>Sorry, there was an error loading data.</p> :
+          ""}
         </div>
 
 
@@ -92,11 +100,20 @@ const PurchaseOrder = () => {
             </tbody>
           </table>
         </div>
+        {statusProduct === fetchStatus.FAILED ?
+          <p>Sorry, there was an error loading data.</p> :
+        ""}
         {providerName && providerId && products ?
           <button type="button" className="btn btn-primary" onClick={(e) => handleSubmit(e)}>Generate Purchase Order</button> :
           <button type="button" className="btn btn-primary disabled" onClick={(e) => handleSubmit(e)}>Generate Purchase Order</button>
         }
-      </form >
+      </form>
+      {statusProduct === fetchStatus.PENDING ?
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div> :
+        ""}
+
     </div >
   )
 }
