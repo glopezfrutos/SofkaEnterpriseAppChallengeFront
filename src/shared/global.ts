@@ -1,1 +1,1 @@
-export const URL = "https://donraulshardwarestore.herokuapp.com/"
+export const URL = "http://localhost:8080/"
