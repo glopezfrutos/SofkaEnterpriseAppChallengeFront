@@ -1,7 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { productType } from '../../shared/productTypes'
 import { productInDocumentType } from '../../shared/purchaseOrderTypes'
-import { addSelectedProduct } from '../../state/selectedProductsSlice'
+import { selectProductStatus } from '../../state/productSlice'
+import { addSelectedProduct, selectSelectedProductsState } from '../../state/selectedProductsSlice'
 import { useAppDispatch } from '../../state/store'
 
 interface IProps {
@@ -9,48 +11,37 @@ interface IProps {
 }
 
 const ProductToBuyRow: React.FunctionComponent<IProps> = ({ p }) => {
-  const [selected, setSelected] = React.useState(false)
-  const [name, setName] = React.useState(p.name)
-  const [quantity, setQuantity] = React.useState(p.stockQuantity < p.min ? p.min - p.stockQuantity : "")
-  const [price, setPrice] = React.useState(p.price)
+  const [quantity, setQuantity] = React.useState(0)
 
-  const onSelectProduct = () => {
-    setSelected(!selected)
-    pushProduct()
-  }
-
-  const inputQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuantity(e.target.value == "" ? "" : +e.target.value)
-    console.log(quantity)
-    if (quantity == 0 || quantity == "") {
-      setSelected(false)
-    } else {
-      setSelected(true)
-      pushProduct()
-    }
-  }
+  const selectedProducts = useSelector(selectSelectedProductsState())
 
   // To push a Selected Product in the Purchase Order
   const dispatch = useAppDispatch()
-  const pushProduct = () => {
-    const selectedProduct: productInDocumentType = { name, quantity: +quantity, price }
-    dispatch(addSelectedProduct(selectedProduct))
+  const selectProduct = () => {
+    if (quantity > 0) {
+      const selectedProduct: productInDocumentType = { name: p.name, quantity: +quantity, price: p.price }
+      dispatch(addSelectedProduct(selectedProduct))
+    }
+  }
+
+  const inputQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (+e.target.value >= 0) {
+      setQuantity(+e.target.value)
+    }
   }
 
 
   return (
     <tr key={p.id}>
-      <th scope="row">
-        <div className="form-check">
-          <input className="form-check-input" type="checkbox" checked={selected} onChange={onSelectProduct} />
-        </div>
-      </th>
       <th scope="row">{p.name}</th>
-      <td><input type="number" aria-label="Last name" className="form-control" value={quantity}
+      <td><input type="number" className="form-control" value={quantity}
         onChange={(e) => inputQuantity(e)} /></td>
       <td>{p.min}</td>
       <td>{p.max}</td>
       <td>{p.stockQuantity}</td>
+      <th scope="row">
+        <button type="button" className="btn btn-primary" onClick={() => selectProduct()}>Add</button>
+      </th>
     </tr>
   )
 }
