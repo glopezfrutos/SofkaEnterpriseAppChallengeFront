@@ -4,7 +4,7 @@ import { fetchStatus } from '../../shared/fetchStatus'
 import { providerType } from '../../shared/providerTypes'
 import { postPurchaseOrderType, productInDocumentType } from '../../shared/purchaseOrderTypes'
 import { getAllProviders, selectProviderFetchError, selectProviderState, selectProviderStatus } from '../../state/providerSlice'
-import { postPurchaseOrder } from '../../state/purchaseOrderSlice'
+import { getAllPurchaseOrders, postPurchaseOrder, selectPurchaseOrderFetchError, selectPurchaseOrderState, selectPurchaseOrderStatus } from '../../state/purchaseOrderSlice'
 import { clearSelectedProduct, removeSelectedProduct, selectSelectedProductsState } from '../../state/selectedProductsSlice'
 import { useAppDispatch } from '../../state/store'
 import ProviderOptions from './ProviderOptions'
@@ -23,6 +23,14 @@ const SelectedProducts = () => {
     }, [dispatch])
 
 
+    // Get Purchase Orders list
+    const [refresh, setRefresh] = React.useState(false)
+    const statePurchaseOrder = useSelector(selectPurchaseOrderState())
+    React.useEffect(() => {
+        dispatch(getAllPurchaseOrders())
+    }, [dispatch, refresh])
+
+
     const selectedProducts = useSelector(selectSelectedProductsState())
     // Variables to post a new Purchase order
     const [providerName, setProviderName] = React.useState('')
@@ -38,11 +46,11 @@ const SelectedProducts = () => {
         e.preventDefault
         // dispatch
         const newOrder: postPurchaseOrderType = { providerName, providerId, products: selectedProducts }
+        setRefresh(true)
         dispatch(postPurchaseOrder(newOrder))
         setProviderName('')
         setProviderId('')
         dispatch(clearSelectedProduct(''))
-        console.log(selectedProducts)
     }
 
     // To handle options from select list of Providers.
@@ -53,11 +61,14 @@ const SelectedProducts = () => {
         setProviderId("" + providerSelected.id)
     }
 
+
+
     return (
         <div>
             <div className="mb-3">
                 <label className="form-label">Provider</label>
                 <select className="form-select" aria-label="Default select example" value={selectedProvider} onChange={(event) => selectedProviderHandler(event)}>
+                    <option disabled selected hidden> --- Select an option --- </option>
                     {!errorProvider && stateProvider.map((p: providerType) => <ProviderOptions key={p.id} provider={p} />)}
                 </select>
                 {statusProvider === fetchStatus.PENDING ?
@@ -81,7 +92,7 @@ const SelectedProducts = () => {
                 <tbody>
                     {selectedProducts.map(p => {
                         return (
-                            <tr>
+                            <tr key={p.name+Math.random()}>
                                 <th scope="row">{p.name}</th>
                                 <td>{p.price}</td>
                                 <td>{p.quantity}</td>
@@ -94,10 +105,54 @@ const SelectedProducts = () => {
                 </tbody>
             </table>
             {providerName && providerId ?
-                <button type="button" className="btn btn-primary" onClick={(e) => handleSubmit(e)}>Generate Purchase Order</button> :
+                <button type="button" className="btn btn-primary" onClick={(e) => handleSubmit(e)} data-bs-toggle="modal" data-bs-target="#addProviderModal">Generate Purchase Order</button> :
                 <button type="button" className="btn btn-primary disabled" onClick={(e) => handleSubmit(e)}>Generate Purchase Order</button>
             }
-        </div>
+
+
+            {/* Generated Purchase Order MODAL */}
+            <div className="modal fade" id="addProviderModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">New purchase order generated:</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            {statePurchaseOrder
+                                .slice(-1)
+                                .map(order => {
+                                    return (
+                                        <div key={order.id}>
+                                            <h4> Order Number: {order.orderNumber}
+                                                {/* {statePurchaseOrder.slice(-2).map(p => p.orderNumber ? p.orderNumber : 0)[0] +1}  */}
+                                            </h4>
+                                            <p> order: {order.providerName} </p>
+                                            {order.products.map(product => {
+                                                return (
+                                                    <div key={order.id + product.quantity + product.price}>
+                                                        <h5> Product name: {product.name} </h5>
+                                                        <p> Product price: {product.price} </p>
+                                                        <p> Product quantity: {product.quantity} </p>
+                                                    </div>
+                                                )
+                                            })}
+                                            <br />
+                                        </div>
+                                    )
+                                })
+                            }
+
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div >
     )
 }
 

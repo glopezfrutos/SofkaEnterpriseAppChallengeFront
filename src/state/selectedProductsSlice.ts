@@ -16,12 +16,11 @@ export const selectedProductsSlice = createSlice({
             state.forEach((product) => {
                 if (product.name === action.payload.name) {
                     state.splice(state.indexOf(product), 1)
-                }})
+                }
+            })
         },
         clearSelectedProduct(state, action) {
-            console.log("clearSelectedProduct")
-                    state.splice(0)
-                
+            state.splice(0)
         }
     }
 })

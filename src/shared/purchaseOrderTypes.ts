@@ -15,7 +15,7 @@ export type productToSelectType = {
 
 export type purchaseOrderType = {
     id: string
-    orderNumer: number | null
+    orderNumber: number | null
     date: Date
     providerId: number
     providerName: number
