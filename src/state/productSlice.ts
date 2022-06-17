@@ -19,7 +19,18 @@ export const getAllProducts = createAsyncThunk('product/fetchAll', async () => {
     return (await response.json()) as productType[]
 })
 
-export const postProduct = createAsyncThunk('product/create', async (product: postProductType) => {
+export const postProduct = createAsyncThunk('product/create', async (product: postProductType | productType) => {
+    const response = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(product),
+    })
+    return (await response.json()) as productType
+})
+
+export const putProduct = createAsyncThunk('product/update', async (product: postProductType | productType) => {
     const response = await fetch(ENDPOINT, {
         method: 'POST',
         headers: {
@@ -35,7 +46,8 @@ export const productSlice = createSlice({
     name: "products",
     initialState,
     reducers: {
-        addProduct: (state, action) => { }
+        addProduct: (state, action) => { },
+        updateProduct: (state, action) => { },
     },
     extraReducers: (builder) => {
         // get
@@ -60,6 +72,22 @@ export const productSlice = createSlice({
             state.products.push(action.payload)
         })
         builder.addCase(postProduct.rejected, (state) => {
+            state.status = fetchStatus.FAILED
+            state.error = 'Something went wrong while creating the post'
+        })
+        // put
+        builder.addCase(putProduct.pending, (state) => {
+            state.status = fetchStatus.PENDING
+        })
+        builder.addCase(putProduct.fulfilled, (state, action) => {
+            state.status = fetchStatus.COMPLETED
+            state.products.forEach((product) => {
+                if (product.id === action.payload.id) {
+                    state.products.splice(state.products.indexOf(product), 1, action.payload)
+                }
+            })
+        })
+        builder.addCase(putProduct.rejected, (state) => {
             state.status = fetchStatus.FAILED
             state.error = 'Something went wrong while creating the post'
         })

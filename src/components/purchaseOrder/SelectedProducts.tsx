@@ -1,17 +1,19 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { fetchStatus } from '../../shared/fetchStatus'
+import { productType, selectedProductToPurchaseType } from '../../shared/productTypes'
 import { providerType } from '../../shared/providerTypes'
-import { postPurchaseOrderType, productInDocumentType } from '../../shared/purchaseOrderTypes'
+import { postPurchaseOrderType } from '../../shared/purchaseOrderTypes'
+import { putProduct } from '../../state/productSlice'
 import { getAllProviders, selectProviderFetchError, selectProviderState, selectProviderStatus } from '../../state/providerSlice'
-import { getAllPurchaseOrders, postPurchaseOrder, selectPurchaseOrderFetchError, selectPurchaseOrderState, selectPurchaseOrderStatus } from '../../state/purchaseOrderSlice'
+import { getAllPurchaseOrders, postPurchaseOrder, selectPurchaseOrderState } from '../../state/purchaseOrderSlice'
 import { clearSelectedProduct, removeSelectedProduct, selectSelectedProductsState } from '../../state/selectedProductsSlice'
 import { useAppDispatch } from '../../state/store'
 import ProviderOptions from './ProviderOptions'
 
 const SelectedProducts = () => {
     const dispatch = useAppDispatch()
-    
+
     // Get providers list
     const errorProvider = useSelector(selectProviderFetchError())
     const statusProvider = useSelector(selectProviderStatus())
@@ -37,19 +39,34 @@ const SelectedProducts = () => {
     const [providerId, setProviderId] = React.useState('')
 
     // To push a Selected Product in the Purchase Order
-    const removeProduct = (p: productInDocumentType) => {
-        dispatch(removeSelectedProduct({ name: p.name, price: p.price, quantity: p.quantity }))
+    const removeProduct = (p: productType) => {
+        dispatch(removeSelectedProduct(p))
     }
 
     // To post a new Purchase order
     const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault
-        // dispatch
-        const newOrder: postPurchaseOrderType = { providerName, providerId, products: selectedProducts }
-        setRefresh(true)
+        // dispatch Purchase Order
+        const newOrder: postPurchaseOrderType = {
+            providerName,
+            providerId,
+            products: selectedProducts.map(product => {
+                return {
+                    id: product.id,
+                    name: product.name,
+                    quantity: product.selectedQuantity,
+                    price: product.price
+                }
+            })
+        }
         dispatch(postPurchaseOrder(newOrder))
-        setProviderName('')
-        setProviderId('')
+        // Handle Stock
+        selectedProducts.forEach(product => {
+            handleStock(product)
+        });
+        // Refresh
+        setRefresh(true)
+        // Reset values
         dispatch(clearSelectedProduct(''))
     }
 
@@ -62,6 +79,19 @@ const SelectedProducts = () => {
     }
 
 
+    // To modify each produc stock
+    const handleStock = async (product: selectedProductToPurchaseType) => {
+        const newQuantity = product.stockQuantity + product.selectedQuantity;
+        dispatch(putProduct({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            min: product.min,
+            max: product.max,
+            stockQuantity: newQuantity,
+            active: product.active
+        }))
+    }
 
     return (
         <div>
@@ -92,10 +122,9 @@ const SelectedProducts = () => {
                 <tbody>
                     {selectedProducts.map(p => {
                         return (
-                            <tr key={p.name+Math.random()}>
+                            <tr key={p.id}>
                                 <th scope="row">{p.name}</th>
-                                <td>{p.price}</td>
-                                <td>{p.quantity}</td>
+                                <td>{p.selectedQuantity}</td>
                                 <td>
                                     <button type="button" className="btn btn-primary" onClick={() => removeProduct(p)}>Trash</button>
                                 </td>
@@ -115,7 +144,7 @@ const SelectedProducts = () => {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">New purchase order generated:</h5>
+                            <h4 className="modal-title" id="exampleModalLabel">New purchase order generated:</h4>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
@@ -124,19 +153,28 @@ const SelectedProducts = () => {
                                 .map(order => {
                                     return (
                                         <div key={order.id}>
-                                            <h4> Order Number: {order.orderNumber}
-                                                {/* {statePurchaseOrder.slice(-2).map(p => p.orderNumber ? p.orderNumber : 0)[0] +1}  */}
-                                            </h4>
-                                            <p> order: {order.providerName} </p>
-                                            {order.products.map(product => {
-                                                return (
-                                                    <div key={order.id + product.quantity + product.price}>
-                                                        <h5> Product name: {product.name} </h5>
-                                                        <p> Product price: {product.price} </p>
-                                                        <p> Product quantity: {product.quantity} </p>
-                                                    </div>
-                                                )
-                                            })}
+                                            <h5> Order Number: {order.orderNumber}</h5>
+                                            <p> Provider: {order.providerName} </p>
+                                            <p> Date: {order.date}</p>
+
+                                            <table className="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Product name</th>
+                                                        <th scope="col">Product quantity</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {order.products.map(product => {
+                                                        return (
+                                                            <tr key={product.id}>
+                                                                <td>{product.name}</td>
+                                                                <td>{product.quantity}</td>
+                                                            </tr>
+                                                        )
+                                                    })}
+                                                </tbody>
+                                            </table>
                                             <br />
                                         </div>
                                     )

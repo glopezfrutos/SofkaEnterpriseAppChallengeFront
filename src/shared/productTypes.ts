@@ -10,6 +10,24 @@ export type productType = {
     active: boolean
 }
 
+export type productInDocumentType = {
+    id: string
+    name: string
+    quantity: number
+    price: number
+}
+
+export type selectedProductToPurchaseType = {
+    id: string
+    name: string
+    stockQuantity: number
+    selectedQuantity: number
+    min: number
+    max: number
+    price: number
+    active: boolean
+}
+
 export type postProductType = {
     name: string
     stockQuantity: number | null

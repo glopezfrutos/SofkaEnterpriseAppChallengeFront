@@ -54,7 +54,7 @@ const PurchaseOrder = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {!errorProduct && productState.map(prod => <ProductToBuyRow key={prod.name} p={prod} />)}
+                        {!errorProduct && productState.map(prod => <ProductToBuyRow key={prod.id} p={prod} />)}
                       </tbody>
                     </table>
                   </div>

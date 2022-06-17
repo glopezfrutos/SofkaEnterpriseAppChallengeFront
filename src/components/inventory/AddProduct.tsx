@@ -10,17 +10,17 @@ const AddProduct = () => {
     const [price, setPrice] = React.useState(0)
     const dispatch = useAppDispatch()
 
-    const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
+    const handleSubmit = async () => {
         if (name && min && max && price) {
-          // dispatch
-          const newProduct: postProductType = { name, stockQuantity: 0, min, max, price, active: true }
-          dispatch(postProduct(newProduct))
-          setName('')
-          setMin(0)
-          setMax(0)
-          setPrice(0)
+            // dispatch
+            const newProduct: postProductType = { name, stockQuantity: 0, min, max, price, active: true }
+            dispatch(postProduct(newProduct))
+            setName('')
+            setMin(0)
+            setMax(0)
+            setPrice(0)
         }
-      }
+    }
 
     return (
         <div>
@@ -56,7 +56,7 @@ const AddProduct = () => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={(e) => handleSubmit(e)}>Add</button>
+                            <button type="button" className="btn btn-primary" onClick={() => handleSubmit()}>Add</button>
                         </div>
                     </div>
                 </div>

@@ -9,7 +9,7 @@ interface IProps {
 }
 
 const ProductToBuyRow: React.FunctionComponent<IProps> = ({ p }) => {
-  const [selectedQuantity, setSelectedQuantity] = React.useState((p.max-p.stockQuantity)>=0 ? p.max-p.stockQuantity : 0)
+  const [selectedQuantity, setSelectedQuantity] = React.useState(0)
   const selectedProducts = useSelector(selectSelectedProductsState())
 
   const checkIsAlreadySelected = () => {
@@ -26,7 +26,7 @@ const ProductToBuyRow: React.FunctionComponent<IProps> = ({ p }) => {
   const dispatch = useAppDispatch()
   const selectProduct = () => {
     
-    if (selectedQuantity > 0 && !checkIsAlreadySelected()) {
+    if (selectedQuantity > 0 && selectedQuantity <= p.stockQuantity && !checkIsAlreadySelected()) {
       dispatch(addSelectedProduct({
         id: p.id,
         name: p.name,

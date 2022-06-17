@@ -1,20 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { productInDocumentType, productToSelectType } from "../shared/purchaseOrderTypes";
+import { productType, selectedProductToPurchaseType } from "../shared/productTypes";
 import { RootState } from "./store";
 
 
-const initialState: productInDocumentType[] = []
+const initialState: selectedProductToPurchaseType[] = []
 
 export const selectedProductsSlice = createSlice({
     name: 'selectedProducts',
     initialState,
     reducers: {
-        addSelectedProduct(state, action) {
+        addSelectedProduct(state, action: PayloadAction<selectedProductToPurchaseType>) {
             state.push(action.payload)
         },
-        removeSelectedProduct(state, action: PayloadAction<productInDocumentType>) {
+        removeSelectedProduct(state, action: PayloadAction<selectedProductToPurchaseType|productType>) {
             state.forEach((product) => {
-                if (product.name === action.payload.name) {
+                if (product.id === action.payload.id) {
                     state.splice(state.indexOf(product), 1)
                 }
             })

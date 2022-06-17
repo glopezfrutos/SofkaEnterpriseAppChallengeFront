@@ -20,15 +20,8 @@ export const getAllPurchaseOrders = createAsyncThunk('order/fetchAll', async () 
     return (await response.json()) as purchaseOrderType[]
 })
 
-export const getPurchaseOrderById = createAsyncThunk('order/fetchById', async (id: string) => {
-    const response = await fetch(ENDPOINT + "/" + id, {
-        method: 'GET'
-    })
-    return (await response.json()) as purchaseOrderType
-})
 
 export const postPurchaseOrder = createAsyncThunk('purchaseOrder/create', async (order: postPurchaseOrderType) => {
-    console.log(order)
     const response = await fetch(ENDPOINT, {
         method: 'POST',
         headers: {
@@ -44,7 +37,8 @@ export const purchaseOrderSlice = createSlice({
     name: "purchaseOrders",
     initialState,
     reducers: {
-        addPurchaseOrder: (state, action) => { }
+        addPurchaseOrder: (state, action) => { },
+        updatePurchaseOrder: (state, action) => { }
     },
     extraReducers: (builder) => {
         // get

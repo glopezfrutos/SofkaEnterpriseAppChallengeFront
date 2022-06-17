@@ -1,22 +1,11 @@
 import { fetchStatus } from "./fetchStatus"
+import { productInDocumentType } from "./productTypes"
 
-export type productInDocumentType = {
-    name: string
-    quantity: number
-    price: number
-}
-
-export type productToSelectType = {
-    selected: boolean
-    name: string
-    quantity: number
-    price: number
-}
 
 export type purchaseOrderType = {
     id: string
     orderNumber: number | null
-    date: Date
+    date: string
     providerId: number
     providerName: number
     products: productInDocumentType[]
