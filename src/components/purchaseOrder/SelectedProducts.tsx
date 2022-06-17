@@ -153,7 +153,7 @@ const SelectedProducts = () => {
                                 .map(order => {
                                     return (
                                         <div key={order.id}>
-                                            <h5> Order Number: {order.orderNumber}</h5>
+                                            <h5> Order Number: {statePurchaseOrder.slice(-2).map(order => order.orderNumber ? order.orderNumber : 0)[0]+1}</h5>
                                             <p> Provider: {order.providerName} </p>
                                             <p> Date: {order.date}</p>
 
